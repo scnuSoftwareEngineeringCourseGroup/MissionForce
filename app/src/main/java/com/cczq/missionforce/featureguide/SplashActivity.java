@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.featureguide.global.AppConstants;
 import com.cczq.missionforce.featureguide.utils.SpUtils;
+import com.cczq.missionforce.loginresgister.LoginActivity;
 
 import me.wangyuwei.particleview.ParticleView;
 
@@ -58,7 +58,7 @@ public class SplashActivity extends Activity {
     }
 
     private void enterHomeActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

@@ -4,14 +4,27 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.loginresgister.utils.SessionManager;
+import com.cczq.missionforce.utils.AppController;
+import com.cczq.missionforce.utils.configURL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登陆的Activity
@@ -31,6 +44,9 @@ public class LoginActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         inputEmail = (EditText) findViewById(R.id.email);
@@ -77,7 +93,7 @@ public class LoginActivity extends Activity {
         linkToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -86,18 +102,80 @@ public class LoginActivity extends Activity {
 
     /**
      * 检查登陆认证
+     *
      * @param email
      * @param password
      */
-    private void checkLogin(final String email,final String password)
-    {
+    private void checkLogin(final String email, final String password) {
+
         //用来取消请求
         String tag_string_req = "req_login";
+        //设置进度窗口的信息
         progressDialog.setMessage("Logging in ...");
+        //显示进度窗口
         showDialog();
 
-        //StringRequest strReq = new StringRequest(Method.POST,Config_URL.)
+        //建立StringRequest
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                configURL.URL_LOGIN, new Response.Listener<String>() {
 
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Login Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    //检查error节点
+                    if (!error) {
+                        //用户成功登陆
+                        //设置已登陆
+                        sessionManager.setLogin(true);
+                        //开始主要活动
+                        Intent intent = new Intent(LoginActivity.this,
+                                MainActivity.class);
+
+                        //开始跳转
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        //错误信息
+                        String errorMsg = jObj.getString("error_msg");
+                        //显示错误信息
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // 抛出JSON的错误Exception
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //消失进度窗口
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // POST的参数到LoginURl服务器
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "login");
+                params.put("email", email);
+                params.put("password", password);
+                return params;
+            }
+        };
+        //添加到请求队列
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
 
