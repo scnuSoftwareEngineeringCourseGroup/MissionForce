@@ -3,12 +3,13 @@ package com.cczq.missionforce.featureguide;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.featureguide.global.AppConstants;
 import com.cczq.missionforce.featureguide.utils.SpUtils;
+
+import me.wangyuwei.particleview.ParticleView;
 
 
 /**
@@ -17,6 +18,9 @@ import com.cczq.missionforce.featureguide.utils.SpUtils;
  */
 
 public class SplashActivity extends Activity {
+
+    ParticleView particleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +36,25 @@ public class SplashActivity extends Activity {
 
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_splash);
+        particleView = (ParticleView) findViewById(R.id.particleView);
 
-        new Handler().postDelayed(new Runnable() {
+
+        //设置动画结束后的回调函数
+        particleView.setOnParticleAnimListener(new ParticleView.ParticleAnimListener() {
             @Override
-            public void run() {
+            public void onAnimationEnd() {
                 enterHomeActivity();
             }
-        }, 2000);
+        });
+
+        //开始动画，设置延迟
+        particleView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                particleView.startAnim();
+            }
+        }, 200);
+
     }
 
     private void enterHomeActivity() {
