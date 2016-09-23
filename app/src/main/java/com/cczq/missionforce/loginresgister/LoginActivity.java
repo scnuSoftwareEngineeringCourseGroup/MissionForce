@@ -17,7 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.loginresgister.utils.SessionManager;
-import com.cczq.missionforce.utils.AppController;
+import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.utils.configURL;
 
 import org.json.JSONException;

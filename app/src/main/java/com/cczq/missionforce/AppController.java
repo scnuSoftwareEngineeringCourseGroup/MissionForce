@@ -1,12 +1,14 @@
-package com.cczq.missionforce.utils;
+package com.cczq.missionforce;
 
 import android.app.Application;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.cczq.missionforce.utils.LruBitmapCache;
 
 /**
  * 创建一个单例模式
@@ -14,8 +16,12 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class AppController extends Application {
-    public static final String TAG = AppController.class.getSimpleName();
 
+    //获得字体文件
+    private static final String CANARO_EXTRA_BOLD_PATH = "fonts/canaro_extra_bold.otf";
+    public static Typeface canaroExtraBold;
+
+    public static final String TAG = AppController.class.getSimpleName();
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
 
@@ -24,6 +30,7 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initTypeface();
         Instance = this;
     }
 
@@ -68,6 +75,10 @@ public class AppController extends Application {
         if (requestQueue != null) {
             requestQueue.cancelAll(tag);
         }
+    }
+
+    private void initTypeface() {
+        canaroExtraBold = Typeface.createFromAsset(getAssets(), CANARO_EXTRA_BOLD_PATH);
     }
 
 }

@@ -10,4 +10,14 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
+
+
+
+    <!--下面是guillotine的string-->
+    <!--<string name="app_name">Guillotine</string>-->
+    <string name="profile">个人资料</string>
+    <string name="feed">小组</string>
+    <string name="activity">任务</string>
+    <string name="settings">设置</string>
+
 </resources>
