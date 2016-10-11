@@ -17,7 +17,7 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/profile_group"
+        android:id="@+id/personal_group"
         style="@style/LinearLayout.GuillotineItem"
         android:layout_marginTop="@dimen/guillotine_medium_margin">
 
@@ -28,11 +28,11 @@
         <com.cczq.missionforce.widget.CanaroTextView
             style="@style/TextView.GuillotineItem"
             android:id="@+id/personal"
-            android:text="@string/profile" />
+            android:text="@string/personal" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/feed_group"
+        android:id="@+id/group_group"
         style="@style/LinearLayout.GuillotineItem">
 
         <ImageView
@@ -40,23 +40,23 @@
             android:src="@drawable/ic_feed" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem"
+            style="@style/TextView.GuillotineItem.Selected"
             android:id="@+id/group"
-            android:text="@string/feed" />
+            android:text="@string/group" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/activity_group"
+        android:id="@+id/mission_group"
         style="@style/LinearLayout.GuillotineItem">
 
         <ImageView
             style="@style/ImageView.GuillotineItem"
-            android:src="@drawable/ic_activity_active" />
+            android:src="@drawable/ic_activity" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem.Selected"
+            style="@style/TextView.GuillotineItem"
             android:id="@+id/mission"
-            android:text="@string/activity" />
+            android:text="@string/mission" />
     </LinearLayout>
 
     <View

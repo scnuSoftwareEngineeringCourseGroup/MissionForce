@@ -15,9 +15,9 @@
 
     <!--下面是guillotine的string-->
     <!--<string name="app_name">Guillotine</string>-->
-    <string name="profile">个人资料</string>
-    <string name="feed">小组</string>
-    <string name="activity">任务</string>
+    <string name="personal">个人资料</string>
+    <string name="group">小组</string>
+    <string name="mission">任务</string>
     <string name="settings">设置</string>
 
     <!---->

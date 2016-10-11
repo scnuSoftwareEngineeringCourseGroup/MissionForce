@@ -1,6 +1,8 @@
 package com.cczq.missionforce;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +16,10 @@ import com.cczq.missionforce.fragment.GroupFragment;
 import com.cczq.missionforce.fragment.MissionFragment;
 import com.cczq.missionforce.fragment.PersonalFragment;
 import com.cczq.missionforce.fragment.SettingsFragment;
+import com.cczq.missionforce.loginresgister.LoginActivity;
 import com.cczq.missionforce.loginresgister.utils.SessionManager;
 import com.cczq.missionforce.utils.SQLiteHandler;
+import com.cczq.missionforce.widget.CanaroTextView;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 
 import butterknife.BindView;
@@ -36,13 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FrameLayout root;
     @BindView(R.id.content_hamburger)
     View contentHamburger;
-//    @BindView(R.id.btnLogout)
-//    Button btnLogout;
-//
-//    @OnClick(R.id.btnLogout)
-//    void Logout() {
-//        logoutUser();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //创建Fragmen
-        PersonalFragment firstFragment = new PersonalFragment();
+        GroupFragment firstFragment = new GroupFragment();
         //取Intent的附加数据作为fragment构造函数的参数
         firstFragment.setArguments(getIntent().getExtras());
         //把fragment嵌入到容器
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-
+        ((TextView) findViewById(R.id.titleBar)).setText("小组");
 
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         root.addView(guillotineMenu);
@@ -90,92 +87,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
 
         guillotineMenu.setOnClickListener(this);
-        findViewById(R.id.personal).setOnClickListener(this);
-        findViewById(R.id.group).setOnClickListener(this);
-        findViewById(R.id.mission).setOnClickListener(this);
-        findViewById(R.id.settings).setOnClickListener(this);
-
+        findViewById(R.id.personal_group).setOnClickListener(this);
+        findViewById(R.id.group_group).setOnClickListener(this);
+        findViewById(R.id.mission_group).setOnClickListener(this);
+        findViewById(R.id.settings_group).setOnClickListener(this);
     }
 
-    private void logoutUser() {
-     /*   session.setLogin(false);
+
+    @Override
+    public void onClick(View v) {
+        jumpToTheFragment(v.getId());
+    }
+
+    private void jumpToTheFragment(int i) {
+        clearSelect();
+        Fragment jumpToFragment = null;
+        switch (i) {
+            case R.id.personal_group:
+                ((TextView) findViewById(R.id.titleBar)).setText("个人资料");
+                ((CanaroTextView) findViewById(R.id.personal)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
+                jumpToFragment = new PersonalFragment();
+                break;
+            case R.id.group_group:
+                ((TextView) findViewById(R.id.titleBar)).setText("小组");
+                ((CanaroTextView) findViewById(R.id.group)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
+                jumpToFragment = new GroupFragment();
+                break;
+            case R.id.mission_group:
+                ((TextView) findViewById(R.id.titleBar)).setText("任务");
+                ((CanaroTextView) findViewById(R.id.mission)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
+                jumpToFragment = new MissionFragment();
+                break;
+            case R.id.settings_group:
+                ((TextView) findViewById(R.id.titleBar)).setText("设置");
+                ((CanaroTextView) findViewById(R.id.settings)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
+                jumpToFragment = new SettingsFragment();
+                break;
+            default:
+                guillotineAnimation.close();
+                return;
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //文章fragment--newFragment完全取代容器上的一个fragment
+        transaction.replace(R.id.fragment_container, jumpToFragment);
+        //增加一个返回堆栈，用户可以导航回来
+        //transaction.addToBackStack(null);
+        //提交事务
+        transaction.commit();
+        //关闭guillotineAnimation
+        guillotineAnimation.close();
+    }
+
+    private void clearSelect() {
+        ((CanaroTextView) findViewById(R.id.personal)).setTextAppearance(this, R.style.TextView_GuillotineItem);
+        ((CanaroTextView) findViewById(R.id.group)).setTextAppearance(this, R.style.TextView_GuillotineItem);
+        ((CanaroTextView) findViewById(R.id.mission)).setTextAppearance(this, R.style.TextView_GuillotineItem);
+        ((CanaroTextView) findViewById(R.id.settings)).setTextAppearance(this, R.style.TextView_GuillotineItem);
+    }
+
+    public void logoutUser() {
+        session.setLogin(false);
         db.deleteUsers();
         // Launching the login activity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();*/
+        finish();
         Log.d("click!logOut!", "debug");
     }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.personal)
-            jumpToPersonalFragment();
-        if (v.getId() == R.id.group)
-            jumpToGroupFragment();
-        if (v.getId() == R.id.mission)
-            jumpToMissionFragment();
-        if (v.getId() == R.id.settings)
-            jumpToSettingFragment();
-    }
-
-    private void jumpToPersonalFragment() {
-        Log.d("jumpToPersonalFragment!", "debug");
-        ((TextView) findViewById(R.id.titleBar)).setText("个人中心");
-        PersonalFragment newFragment = new PersonalFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.commit();
-        guillotineAnimation.close();
-    }
-
-    private void jumpToGroupFragment() {
-        Log.d("jumpToGroupFragment!", "debug");
-        GroupFragment newFragment = new GroupFragment();
-        Bundle args = new Bundle();
-        // args.putInt(ArticleFragment.ARG_POSITION,position);
-        //newFragment.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //文章fragment--newFragment完全取代容器上的一个fragment
-        transaction.replace(R.id.fragment_container, newFragment);
-        //增加一个返回堆栈，用户可以导航回来
-        //transaction.addToBackStack(null);
-        //提交事务
-        transaction.commit();
-        //关闭guillotineAnimation
-
-        ((TextView) findViewById(R.id.titleBar)).setText("小组");
-        guillotineAnimation.close();
-
-    }
-
-    private void jumpToMissionFragment() {
-        Log.d("jumpToMissionFragment!", "debug");
-        ((TextView) findViewById(R.id.titleBar)).setText("任务");
-        MissionFragment newFragment = new MissionFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.commit();
-        guillotineAnimation.close();
-    }
-
-    private void jumpToSettingFragment() {
-        Log.d("jumpToSettingFragment!", "debug");
-        SettingsFragment newFragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        // args.putInt(ArticleFragment.ARG_POSITION,position);
-        //newFragment.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //文章fragment--newFragment完全取代容器上的一个fragment
-        transaction.replace(R.id.fragment_container, newFragment);
-        //增加一个返回堆栈，用户可以导航回来
-        //transaction.addToBackStack(null);
-        //提交事务
-        transaction.commit();
-        //关闭guillotineAnimation
-        ((TextView) findViewById(R.id.titleBar)).setText("设置");
-        guillotineAnimation.close();
-    }
-
-
 }
