@@ -20,4 +20,7 @@
     <string name="activity">任务</string>
     <string name="settings">设置</string>
 
+    <!---->
+    <string name="feedback">反馈</string>
+
 </resources>

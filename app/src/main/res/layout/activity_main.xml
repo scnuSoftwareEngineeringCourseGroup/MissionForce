@@ -29,22 +29,19 @@
                 android:src="@drawable/ic_menu_90" />
 
             <com.cczq.missionforce.widget.CanaroTextView
+                android:id="@+id/titleBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/activity"
-                android:textSize="@dimen/guillotine_item_text_size" />
+                android:textSize="@dimen/guillotine_item_text_size"
+                android:textColor="@color/white"/>
         </android.support.v7.widget.Toolbar>
 
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="@color/button_logout_background"
-            android:text="@string/btn_logout"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+       <FrameLayout
+           android:id="@+id/fragment_container"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
+
     </LinearLayout>
 </FrameLayout>
