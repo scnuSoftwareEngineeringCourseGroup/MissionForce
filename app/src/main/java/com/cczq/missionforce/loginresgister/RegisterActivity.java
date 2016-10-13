@@ -1,8 +1,8 @@
 package com.cczq.missionforce.loginresgister;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +14,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.loginresgister.utils.SessionManager;
-import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.utils.CheckUtils;
 import com.cczq.missionforce.utils.SQLiteHandler;
 import com.cczq.missionforce.utils.configURL;
@@ -27,6 +27,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 注册的Resgister
@@ -41,9 +43,10 @@ public class RegisterActivity extends Activity {
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
-    private ProgressDialog progressDialogDialog;
     private SessionManager sessionManager;
     private SQLiteHandler db;
+
+    private SweetAlertDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,8 +60,10 @@ public class RegisterActivity extends Activity {
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
         // Progress dialog
-        progressDialogDialog = new ProgressDialog(this);
-        progressDialogDialog.setCancelable(false);
+        progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressDialog.setTitleText("Reg ...");
+        progressDialog.setCancelable(false);
 
         // Session manager
         sessionManager = new SessionManager(getApplicationContext());
@@ -85,10 +90,12 @@ public class RegisterActivity extends Activity {
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && CheckUtils.isEmail(email)) {
                     //进行用户注册
+
+
                     registerUser(name, email, password);
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Please enter your details!", Toast.LENGTH_LONG)
+                            "请填写正确的信息（邮箱格式）", Toast.LENGTH_LONG)
                             .show();
                 }
             }
@@ -109,6 +116,7 @@ public class RegisterActivity extends Activity {
 
     /**
      * 存储用户信息在本地，并且提交注册信息到注册的api
+     *
      * @param name
      * @param email
      * @param password
@@ -118,7 +126,6 @@ public class RegisterActivity extends Activity {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        progressDialogDialog.setMessage("Registering ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -127,35 +134,40 @@ public class RegisterActivity extends Activity {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Register Response: " + response.toString());
+                //隐藏进度条
                 hideDialog();
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                       //注册成功，添加个人信息到数据
-                        String uid = jObj.getString("uid");
+                    int ret = jObj.getInt("ret");
+                    JSONObject data = jObj.getJSONObject("data");
+                    int code = data.getInt("code");
 
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                    if (ret == 200 && code == 200) {
+                        //注册成功
 
-                        // 插入个人信息到本地数据库
-                        db.addUser(name, email, uid, created_at);
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("注册成功！")
+                                .setContentText("确认!")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        // 跳转到登陆界面
+                                        sDialog.dismissWithAnimation();
+                                        Intent intent = new Intent(
+                                                RegisterActivity.this,
+                                                LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
 
-                        // 跳转到登陆界面
-                        Intent intent = new Intent(
-                                RegisterActivity.this,
-                                LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                                    }
+                                })
+                                .show();
+
                     } else {
 
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = jObj.getString("error_msg");
+                        //显示错误信息
+                        String errorMsg = jObj.getString("msg") + data.getString("msg");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -171,6 +183,7 @@ public class RegisterActivity extends Activity {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
+                //隐藏进度条
                 hideDialog();
             }
         }) {
@@ -180,10 +193,9 @@ public class RegisterActivity extends Activity {
                 // POST的参数
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("tag", "register");
-                params.put("name", name);
+                params.put("username", name);
                 params.put("email", email);
                 params.put("password", password);
-
                 return params;
             }
 
@@ -197,15 +209,19 @@ public class RegisterActivity extends Activity {
      * 显示进度条对话框
      */
     private void showDialog() {
-        if (!progressDialogDialog.isShowing())
-            progressDialogDialog.show();
+        if (!progressDialog.isShowing())
+            progressDialog.show();
     }
 
     /**
      * 隐藏进度条对话框
      */
     private void hideDialog() {
-        if (progressDialogDialog.isShowing())
-            progressDialogDialog.dismiss();
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    private Activity getActivity() {
+        return this;
     }
 }

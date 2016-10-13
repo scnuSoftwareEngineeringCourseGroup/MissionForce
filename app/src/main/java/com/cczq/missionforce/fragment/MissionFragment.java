@@ -2,6 +2,7 @@ package com.cczq.missionforce.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import com.cczq.missionforce.utils.MissionListAdapter;
  * Created by Shyuan on 2016/10/11.
  */
 
-public class MissionFragment extends ListFragment {
+public class MissionFragment extends SwipeRefreshListFragemnt {
 
     private MissionListAdapter missionListAdapter = null;
 

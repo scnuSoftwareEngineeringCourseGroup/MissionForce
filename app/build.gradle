@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         mavenCentral()
@@ -12,6 +13,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
+
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
 
@@ -35,6 +37,7 @@ repositories {
     maven {
         url 'https://dl.bintray.com/wangyuwei/maven'
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -45,4 +48,5 @@ dependencies {
     compile 'me.wangyuwei:ParticleView:1.0.4'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'cn.pedant.sweetalert:library:1.3'
 }

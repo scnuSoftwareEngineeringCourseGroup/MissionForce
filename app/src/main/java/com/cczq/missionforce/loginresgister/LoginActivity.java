@@ -1,8 +1,8 @@
 package com.cczq.missionforce.loginresgister;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +14,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.R;
 import com.cczq.missionforce.loginresgister.utils.SessionManager;
-import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.utils.configURL;
 
 import org.json.JSONException;
@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 登陆的Activity
@@ -39,7 +41,7 @@ public class LoginActivity extends Activity {
     private Button linkToRegister;
     private EditText inputEmail;
     private EditText inputPassword;
-    private ProgressDialog progressDialog;
+    private SweetAlertDialog progressDialog;
     private SessionManager sessionManager;
 
     @Override
@@ -55,7 +57,9 @@ public class LoginActivity extends Activity {
         linkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
 
         //初始化progressDialog
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressDialog.setTitleText("Logging in ...");
         progressDialog.setCancelable(false);
 
         //初始化SessionManager
@@ -95,7 +99,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
-               // finish();
+                // finish();
             }
         });
     }
@@ -110,8 +114,6 @@ public class LoginActivity extends Activity {
 
         //用来取消请求
         String tag_string_req = "req_login";
-        //设置进度窗口的信息
-        progressDialog.setMessage("Logging in ...");
         //显示进度窗口
         showDialog();
 
@@ -126,13 +128,15 @@ public class LoginActivity extends Activity {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    int ret = jObj.getInt("ret");
+                    JSONObject data = jObj.getJSONObject("data");
+                    int code = data.getInt("code");
 
                     //检查error节点
-                    if (!error) {
+                    if (ret == 200 && code == 200) {
                         //用户成功登陆
                         //设置已登陆
-                        sessionManager.setLogin(true);
+                        sessionManager.setLogin(true, data.getInt("info"));
                         //开始主要活动
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);
@@ -142,7 +146,7 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         //错误信息
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("msg") + data.getString("msg");
                         //显示错误信息
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -168,7 +172,7 @@ public class LoginActivity extends Activity {
             protected Map<String, String> getParams() {
                 // POST的参数到LoginURl服务器
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "login");
+                //params.put("tag", "login");
                 params.put("email", email);
                 params.put("password", password);
                 return params;

@@ -67,15 +67,6 @@ public class MissionListAdapter extends BaseAdapter {
         holder.missonNameText.setText("任务名");
         holder.groupNameText.setText("小组");
         holder.timeText.setText("50分钟");
-        //   holder.speaker.setImageResource(R.drawable.ic_activity_active);
-
-        //     holder.speaker.setOnClickListener(new View.OnClickListener(){
-
-        //          @Override
-//            public void onClick(View v) {
-//                //System.out.println("Click on the speaker image on ListItem ");
-        //          }
-//        });
 
         return convertView;
     }

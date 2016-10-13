@@ -24,6 +24,7 @@ public class SessionManager {
     private static final String PREF_NAME = "AndroidHiveLogin";
     //存放在SharedPrefernces的判断是否登陆的KEY名
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
+    private static final String KEY_IS_UID = "UID";
 
     /**
      * SessionManager的构造函数
@@ -37,12 +38,14 @@ public class SessionManager {
     }
 
     /**
-     * 设置是否已登陆的信息
+     * 设置是否已登陆的信息,并且将登陆用户的UID写入
      *
      * @param isLoggedIn 为布尔值
      */
-    public void setLogin(boolean isLoggedIn) {
+    public void setLogin(boolean isLoggedIn, int UID) {
         editor.putBoolean(KEY_IS_LOGGEDIN, isLoggedIn);
+        //将用户UID写入
+        editor.putInt(KEY_IS_UID, UID);
         editor.commit();
         Log.d(TAG, "User login session modified!");
     }
@@ -54,6 +57,15 @@ public class SessionManager {
      */
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
+    }
+
+    /**
+     * 返回已登陆用户的UID
+     *
+     * @return
+     */
+    public int UID() {
+        return pref.getInt(KEY_IS_UID, -1);
     }
 
 }

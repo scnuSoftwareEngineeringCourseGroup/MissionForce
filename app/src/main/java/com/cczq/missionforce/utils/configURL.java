@@ -10,9 +10,9 @@ public class configURL {
     //服务器的基本地址
     private static String base_URL = "http://119.29.186.160/";
     //验证登陆的地址
-    public static String URL_LOGIN = base_URL + "android_login_api/";
+    public static String URL_LOGIN = base_URL + "phalapi/Public/missionforce/?service=User.loginUser";
     //进行注册的地址
-    public static String URL_REGISTER = base_URL + "android_login_api/";
+    public static String URL_REGISTER = base_URL + "phalapi/Public/missionforce/?service=User.registerUser";
 
 
 }
