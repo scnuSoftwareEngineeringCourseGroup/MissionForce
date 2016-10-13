@@ -41,6 +41,11 @@
             android:name=".loginresgister.RegisterActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
+        <!--倒计时的Activity-->
+        <activity
+            android:name=".countDownActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.cczq.missionforce.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.cczq.missionforce.AppController;
 import com.cczq.missionforce.MainActivity;
 import com.cczq.missionforce.Model.Mission;
 import com.cczq.missionforce.R;
+import com.cczq.missionforce.countDownActivity;
 import com.cczq.missionforce.utils.MissionListAdapter;
 import com.cczq.missionforce.utils.configURL;
 import com.cczq.missionforce.widget.SwipeRefreshListFragment;
@@ -76,13 +78,21 @@ public class MissionFragment extends SwipeRefreshListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        System.out.println("Click On List Item!!!");
+        //System.out.println("Click On List Item!!!");
+        Mission mission = missionListAdapter.missionData.get(position);
+        Intent intent = new Intent(getActivity(), countDownActivity.class);
+        //序列化传递对象
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("mission", mission);
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 
     private void initiateRefresh() {
         Log.i(LOG_TAG, "initiateRefresh");
         //用来取消请求
+        setRefreshing(true);
         String tag_string_req = "req_check_mission";
 
         //建立StringRequest
@@ -146,42 +156,20 @@ public class MissionFragment extends SwipeRefreshListFragment {
                 JSONObject jsonObject = json.getJSONObject(i);
                 mission.missionNameText = jsonObject.getString("mission_name");
                 mission.groupNameText = jsonObject.getString("group_name");
-                mission.timeText = Integer.toString(jsonObject.getInt("mission_time")) + "分钟";
+                mission.time = jsonObject.getInt("mission_time");
+                mission.timeText = Integer.toString(mission.time) + "分钟";
+                mission.MID = jsonObject.getInt("MID");
                 missionListAdapter.missionData.add(mission);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
-       // setListAdapter(missionListAdapter);
+        // setListAdapter(missionListAdapter);
         missionListAdapter.notifyDataSetChanged();
         setRefreshing(false);
 
     }
 
 
-
-  /*  private class BackgroundTask extends AsyncTask<Void, Void, List<String>> {
-
-        static final int TASK_DURATION = 3 * 1000; // 3 seconds
-
-
-        @Override
-        protected List<String> doInBackground(Void... params) {
-            // Sleep for a small amount of time to simulate a background-task
-
-
-            // Return a new random list of cheeses
-            //  return Cheeses.randomList(LIST_ITEM_COUNT);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> result) {
-            super.onPostExecute(result);
-            Log.i(LOG_TAG, "end to post");
-            onRefreshComplete();
-        }
-
-    }*/
 }
