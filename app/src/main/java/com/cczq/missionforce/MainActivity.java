@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void logoutUser() {
-        session.setLogin(false);
+        session.setLogin(false, session.UID());
         db.deleteUsers();
         // Launching the login activity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
