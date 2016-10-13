@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final long RIPPLE_DURATION = 250;
     private SQLiteHandler db;
-    private SessionManager session;
+    public SessionManager session;
     private GuillotineAnimation guillotineAnimation;
 
 

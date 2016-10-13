@@ -26,8 +26,8 @@
             android:src="@drawable/ic_profile" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem"
             android:id="@+id/personal"
+            style="@style/TextView.GuillotineItem"
             android:text="@string/personal" />
     </LinearLayout>
 
@@ -40,8 +40,8 @@
             android:src="@drawable/ic_feed" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem.Selected"
             android:id="@+id/group"
+            style="@style/TextView.GuillotineItem.Selected"
             android:text="@string/group" />
     </LinearLayout>
 
@@ -54,8 +54,8 @@
             android:src="@drawable/ic_activity" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem"
             android:id="@+id/mission"
+            style="@style/TextView.GuillotineItem"
             android:text="@string/mission" />
     </LinearLayout>
 
@@ -72,8 +72,8 @@
             android:src="@drawable/ic_settings" />
 
         <com.cczq.missionforce.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem"
             android:id="@+id/settings"
+            style="@style/TextView.GuillotineItem"
             android:text="@string/settings" />
     </LinearLayout>
 </LinearLayout>

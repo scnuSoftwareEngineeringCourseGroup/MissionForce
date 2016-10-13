@@ -7,22 +7,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cczq.missionforce.Model.Mission;
 import com.cczq.missionforce.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by Shyuan on 2016/10/11.
  */
 
-class MissionViewHolder {
-    //  public ImageView animal;
-    public TextView missonNameText;
-    public TextView groupNameText;
-    public TextView timeText;
-    // public ImageView speaker;
-}
-
 
 public class MissionListAdapter extends BaseAdapter {
+
+    private class MissionViewHolder {
+        //  public ImageView animal;
+        public TextView missionNameTextView;
+        public TextView groupNameTextView;
+        public TextView timeTextView;
+        // public ImageView speaker;
+    }
+
+
+    public ArrayList<Mission> missionData = new ArrayList<Mission>();
 
     private LayoutInflater mInflater = null;
 
@@ -34,12 +40,12 @@ public class MissionListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 10;
+        return missionData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return missionData.get(position);
     }
 
     @Override
@@ -53,21 +59,19 @@ public class MissionListAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new MissionViewHolder();
             convertView = mInflater.inflate(R.layout.mission, null);
-            // holder.animal = (ImageView) convertView.findViewById(R.id.animal);
-            holder.missonNameText = (TextView) convertView.findViewById(R.id.cn_word);
-            holder. groupNameText = (TextView) convertView.findViewById(R.id.en_word);
-            holder.timeText = (TextView) convertView.findViewById(R.id.time);
-            // holder.speaker = (ImageView) convertView.findViewById(R.id.speaker);
-
+            holder.missionNameTextView = (TextView) convertView.findViewById(R.id.cn_word);
+            holder.groupNameTextView = (TextView) convertView.findViewById(R.id.en_word);
+            holder.timeTextView = (TextView) convertView.findViewById(R.id.time);
             convertView.setTag(holder);
         } else {
             holder = (MissionViewHolder) convertView.getTag();
         }
-        //    holder.animal.setImageResource(R.drawable.ic_activity_active);
-        holder.missonNameText.setText("任务名");
-        holder.groupNameText.setText("小组");
-        holder.timeText.setText("50分钟");
-
+        holder.missionNameTextView.setText(missionData.get(position).missionNameText);
+        holder.groupNameTextView.setText(missionData.get(position).groupNameText);
+        holder.timeTextView.setText(missionData.get(position).timeText);
         return convertView;
     }
+
+
 }
+
