@@ -1,7 +1,9 @@
 package com.cczq.missionforce.utils;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,23 +76,48 @@ public class MissionListAdapter extends BaseAdapter {
         }
 
         //获得拼音
-        String text = HanziToPinyin.getPinYin(missionData.get(position).missionNameText);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .textColor(Color.WHITE)
-                .width(60)  // width in px
-                .height(60) // height in px
-                .endConfig()
-                .buildRect(text.substring(0,2), ColorGenerator.MATERIAL.getRandomColor());
+        //  String text = HanziToPinyin.getPinYin(missionData.get(position).missionNameText);
+//        TextDrawable drawable = TextDrawable.builder()
+//                .beginConfig()
+//                .textColor(Color.WHITE)
+//                .width(60)  // width in px
+//                .height(60) // height in px
+//                .endConfig()
+//                .buildRect(missionData.get(position).missionNameText.substring(0, 1), MATERIAL.getRandomColor());
 
+        final Drawable drawable = getRectWithAnimation(missionData.get(position).missionNameText, position, ColorGenerator.MATERIAL.getRandomColor());
 
         holder.missionImageView.setImageDrawable(drawable);
+        // fix for animation not playing for some below 4.4 devices
+        holder.missionImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                ((AnimationDrawable) drawable).stop();
+                ((AnimationDrawable) drawable).start();
+            }
+        });
         holder.missionNameTextView.setText(missionData.get(position).missionNameText);
         holder.groupNameTextView.setText(missionData.get(position).groupNameText);
         holder.timeTextView.setText(missionData.get(position).timeText);
         return convertView;
     }
 
+    private Drawable getRectWithAnimation(String string, int delay, int color) {
+        TextDrawable.IBuilder builder = TextDrawable.builder()
+                .rect();
 
+        AnimationDrawable animationDrawable = new AnimationDrawable();
+
+        for (int i = 0; i < string.length() - 1; i++) {
+            Log.d("debug", string.substring(i, i + 1));
+            TextDrawable frame = builder.build(string.substring(i, i + 1), color);
+            animationDrawable.addFrame(frame, 900 + delay * 100);
+        }
+
+        animationDrawable.setOneShot(false);
+        animationDrawable.start();
+
+        return animationDrawable;
+    }
 }
 

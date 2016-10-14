@@ -9,9 +9,21 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.cczq.missionforce.Model.Mission;
+import com.cczq.missionforce.utils.configURL;
 import com.john.waveview.WaveView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.iwgang.countdownview.CountdownView;
 import io.feeeei.circleseekbar.CircleSeekBar;
@@ -30,6 +42,7 @@ public class countDownActivity extends Activity {
     private TextView missionDescriptionTextView;
     private WaveView waveView;
     private Button btnCommitMission;
+    private int remainTime;
     private int remainPer;
 
     private countDownActivity getActivity() {
@@ -47,11 +60,11 @@ public class countDownActivity extends Activity {
         waveView = (WaveView) findViewById(R.id.wave_view);
         missionNameTextView = (TextView) findViewById(R.id.missionName);
         missionDescriptionTextView = (TextView) findViewById(R.id.missionDescription);
-        btnCommitMission = (Button)findViewById(R.id.btn_commitMission);
+        btnCommitMission = (Button) findViewById(R.id.btn_commitMission);
 
         Intent intent = getIntent();
         mission = (Mission) intent.getSerializableExtra("mission");
-        waveView.setProgress(0);
+        waveView.setProgress(1);
         remainPer = 0;
         missionNameTextView.setText(mission.missionNameText);
         missionDescriptionTextView.setText(mission.missionDescriptionText);
@@ -64,12 +77,13 @@ public class countDownActivity extends Activity {
                 double missionTime = mission.time * 1000 * 60;
                 remainPer = (int) (((missionTime - remainTime) / missionTime) * 100);
                 waveView.setProgress(remainPer);
+                getActivity().remainTime =(int)(remainTime/60000);
             }
         });
         btnCommitMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                commitMission();
             }
         });
 
@@ -79,6 +93,15 @@ public class countDownActivity extends Activity {
         mCvCountdownView.start(mission.time * 1000 * 60);
     }
 
+
+    @Override
+    protected  void onStop()
+    {
+        super.onStop();
+        commitMission();
+    }
+
+    //使得两个秒盘和十秒盘转起来
     private void start() {
         //1秒钟的线程
         new Thread() {
@@ -106,30 +129,70 @@ public class countDownActivity extends Activity {
             }
         }.start();
 
-//        //1秒钟的线程  Wave
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                while (remainPer != 100) {
-//                   // Log.d("debug", "remainPer" + Integer.toString(remainPer));
-//                    int num = remainPer - 3;
-//                    if (num >= 0) {
-//                        Log.d("debug", "num = " + Integer.toString(num));
-//                        for (int i = num; i <= num + 6; i++) {
-//                            mWaveHandler.sendEmptyMessage(i);
-//                            SystemClock.sleep(100);
-//                        }
-//                        for (int i = num + 6; i >= num; i--) {
-//                            mWaveHandler.sendEmptyMessage(i);
-//                            SystemClock.sleep(100);
-//                        }
-//                    }
-//                }
-//                Log.d("debug", "end Wave");
-//            }
-//        }.start();
     }
 
+    //提交任务时间
+    private void commitMission() {
+
+
+        //用来取消请求
+        String tag_string_req = "req_commit_mission";
+        //建立StringRequest
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                configURL.URL_COMMITMISSION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // Log.d(TAG, "Login Response: " + response.toString());
+                // hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int ret = jObj.getInt("ret");
+                    JSONObject data = jObj.getJSONObject("data");
+                    int code = data.getInt("code");
+                    String msg = data.getString("msg");
+
+                    //检查error节点
+                    if (ret == 200 && code == 200 && msg.equals("任务时间更新成功")) {
+                        finish();
+                    } else {
+                        //错误信息
+                        String errorMsg = jObj.getString("msg") + data.getString("msg");
+                        //显示错误信息
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // 抛出JSON的错误Exception
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //   Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //消失进度窗口
+                //    hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // POST的参数到LoginURl服务器
+                Map<String, String> params = new HashMap<String, String>();
+                //params.put("tag", "login");
+                params.put("MID", Integer.toString(mission.MID));
+                params.put("TIME", Integer.toString(remainTime));
+                return params;
+            }
+        };
+        //添加到请求队列
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
     private Handler mMinuteHandler = new Handler() {
         @Override
@@ -147,11 +210,4 @@ public class countDownActivity extends Activity {
         }
     };
 
-//    private Handler mWaveHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            int value = msg.what;
-//            waveView.setProgress(value);
-//        }
-//    };
 }
