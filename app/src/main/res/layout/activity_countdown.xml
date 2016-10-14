@@ -4,27 +4,22 @@
     xmlns:wave="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightblue"
+    android:background="@color/powderblue"
     android:orientation="vertical">
 
     <com.john.waveview.WaveView
         android:id="@+id/wave_view"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/sea_dark"
-        wave:above_wave_color="@android:color/white"
-        wave:blow_wave_color="@android:color/white"
-        wave:progress="0"
-        wave:wave_height="little"
-        wave:wave_hz="normal"
-        wave:wave_length="middle" />
+        android:background="@color/snow" />
 
     <TextView
         android:id="@+id/missionName"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
-        android:textColor="@color/snow"
+        android:text="MissionName"
+        android:textColor="@color/greenyellow"
         android:textSize="38sp" />
 
     <TextView
@@ -33,7 +28,8 @@
         android:layout_height="60dp"
         android:layout_below="@id/missionName"
         android:gravity="center"
-        android:textColor="@color/snow"
+        android:text="MissionDescription"
+        android:textColor="@color/greenyellow"
         android:textSize="10sp" />
 
     <io.feeeei.circleseekbar.CircleSeekBar
@@ -81,7 +77,7 @@
         app:timeTextSize="40dp" />
 
     <Button
-        android:id="@+id/commit"
+        android:id="@+id/btn_commitMission"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/seek_minute"

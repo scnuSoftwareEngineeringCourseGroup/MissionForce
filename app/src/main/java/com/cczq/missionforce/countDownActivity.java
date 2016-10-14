@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cczq.missionforce.Model.Mission;
@@ -28,6 +29,7 @@ public class countDownActivity extends Activity {
     private TextView missionNameTextView;
     private TextView missionDescriptionTextView;
     private WaveView waveView;
+    private Button btnCommitMission;
     private int remainPer;
 
     private countDownActivity getActivity() {
@@ -45,6 +47,7 @@ public class countDownActivity extends Activity {
         waveView = (WaveView) findViewById(R.id.wave_view);
         missionNameTextView = (TextView) findViewById(R.id.missionName);
         missionDescriptionTextView = (TextView) findViewById(R.id.missionDescription);
+        btnCommitMission = (Button)findViewById(R.id.btn_commitMission);
 
         Intent intent = getIntent();
         mission = (Mission) intent.getSerializableExtra("mission");
@@ -60,11 +63,16 @@ public class countDownActivity extends Activity {
             public void onInterval(CountdownView cv, long remainTime) {
                 double missionTime = mission.time * 1000 * 60;
                 remainPer = (int) (((missionTime - remainTime) / missionTime) * 100);
-                //waveView.setProgress((int) remainPer * 100);
-               Log.d("debug", "remainPer" + Integer.toString(remainPer));
                 waveView.setProgress(remainPer);
             }
         });
+        btnCommitMission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         start();
         mCvCountdownView.setTag("countDownView");

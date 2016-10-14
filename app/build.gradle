@@ -63,6 +63,6 @@ dependencies {
     compile 'com.github.feeeei:CircleSeekbar:v1.1.1'
 
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    compile 'com.github.john990:WaveView:v0.9'
+   // compile 'com.github.john990:WaveView:v0.9'
 
 }

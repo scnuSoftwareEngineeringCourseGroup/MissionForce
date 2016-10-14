@@ -15,6 +15,7 @@ public class configURL {
     public static String URL_REGISTER = base_URL + "phalapi/Public/missionforce/?service=User.registerUser";
     //进行任务查询地址
     public static String URL_CHEACKMISSION = base_URL + "/phalapi/Public/missionforce/?service=Mission.getMissionByUID";
-
+    //提交任务时间
+    public static String URL_COMMITMISSION = base_URL + "/phalapi/Public/missionforce/?service=Mission.ChangeMissionTime";
 
 }
