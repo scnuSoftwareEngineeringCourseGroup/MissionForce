@@ -7,9 +7,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.cczq.missionforce.Model.Mission;
+import com.john.waveview.WaveView;
 
 import cn.iwgang.countdownview.CountdownView;
 import io.feeeei.circleseekbar.CircleSeekBar;
@@ -24,6 +25,10 @@ public class countDownActivity extends Activity {
     private Mission mission;
     private CircleSeekBar mSecondSeekbar;
     private CircleSeekBar mMinuteSeekbar;
+    private TextView missionNameTextView;
+    private TextView missionDescriptionTextView;
+    private WaveView waveView;
+    private int remainPer;
 
     private countDownActivity getActivity() {
         return this;
@@ -37,25 +42,27 @@ public class countDownActivity extends Activity {
 
         mSecondSeekbar = (CircleSeekBar) findViewById(R.id.seek_second);
         mMinuteSeekbar = (CircleSeekBar) findViewById(R.id.seek_minute);
+        waveView = (WaveView) findViewById(R.id.wave_view);
+        missionNameTextView = (TextView) findViewById(R.id.missionName);
+        missionDescriptionTextView = (TextView) findViewById(R.id.missionDescription);
 
         Intent intent = getIntent();
         mission = (Mission) intent.getSerializableExtra("mission");
-
-        Toast.makeText(this,
-                mission.missionNameText + mission.groupNameText + Integer.toString(mission.time) + Integer.toString(mission.MID), Toast.LENGTH_LONG).show();
+        waveView.setProgress(0);
+        remainPer = 0;
+        missionNameTextView.setText(mission.missionNameText);
+        missionDescriptionTextView.setText(mission.missionDescriptionText);
 
         final CountdownView mCvCountdownView = (CountdownView) findViewById(R.id.countdownView);
         //时间改变的回调函数  基本单位平均是10毫秒
-        mCvCountdownView.setOnCountdownIntervalListener(10*60, new CountdownView.OnCountdownIntervalListener() {
+        mCvCountdownView.setOnCountdownIntervalListener(10 * 60, new CountdownView.OnCountdownIntervalListener() {
             @Override
             public void onInterval(CountdownView cv, long remainTime) {
-
-                //  int Second = (mSecondSeekbar.getCurProcess() + 1) % 100;
-                //    mSecondSeekbar.setCurProcess(Second);
-            //    int Minute = (mMinuteSeekbar.getCurProcess() + 1) % 1000;
-            //    mMinuteSeekbar.setCurProcess(Minute);
-                  Log.d("debug","onInterval");
-
+                double missionTime = mission.time * 1000 * 60;
+                remainPer = (int) (((missionTime - remainTime) / missionTime) * 100);
+                //waveView.setProgress((int) remainPer * 100);
+               Log.d("debug", "remainPer" + Integer.toString(remainPer));
+                waveView.setProgress(remainPer);
             }
         });
 
@@ -90,6 +97,29 @@ public class countDownActivity extends Activity {
                 }
             }
         }.start();
+
+//        //1秒钟的线程  Wave
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                while (remainPer != 100) {
+//                   // Log.d("debug", "remainPer" + Integer.toString(remainPer));
+//                    int num = remainPer - 3;
+//                    if (num >= 0) {
+//                        Log.d("debug", "num = " + Integer.toString(num));
+//                        for (int i = num; i <= num + 6; i++) {
+//                            mWaveHandler.sendEmptyMessage(i);
+//                            SystemClock.sleep(100);
+//                        }
+//                        for (int i = num + 6; i >= num; i--) {
+//                            mWaveHandler.sendEmptyMessage(i);
+//                            SystemClock.sleep(100);
+//                        }
+//                    }
+//                }
+//                Log.d("debug", "end Wave");
+//            }
+//        }.start();
     }
 
 
@@ -108,4 +138,12 @@ public class countDownActivity extends Activity {
             mSecondSeekbar.setCurProcess(value);
         }
     };
+
+//    private Handler mWaveHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            int value = msg.what;
+//            waveView.setProgress(value);
+//        }
+//    };
 }

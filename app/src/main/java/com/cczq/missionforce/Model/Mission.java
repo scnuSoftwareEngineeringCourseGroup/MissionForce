@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Mission implements Serializable {
     public String missionNameText;
+    public String missionDescriptionText;
     public String groupNameText;
     public String timeText;
     public int time;

@@ -155,6 +155,7 @@ public class MissionFragment extends SwipeRefreshListFragment {
             try {
                 JSONObject jsonObject = json.getJSONObject(i);
                 mission.missionNameText = jsonObject.getString("mission_name");
+                mission.missionDescriptionText = jsonObject.getString("mission_description");
                 mission.groupNameText = jsonObject.getString("group_name");
                 mission.time = jsonObject.getInt("mission_time");
                 mission.timeText = Integer.toString(mission.time) + "分钟";

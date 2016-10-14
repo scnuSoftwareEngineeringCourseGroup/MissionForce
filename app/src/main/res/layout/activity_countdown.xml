@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:wave="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightblue"
     android:orientation="vertical">
+
+    <com.john.waveview.WaveView
+        android:id="@+id/wave_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/sea_dark"
+        wave:above_wave_color="@android:color/white"
+        wave:blow_wave_color="@android:color/white"
+        wave:progress="0"
+        wave:wave_height="little"
+        wave:wave_hz="normal"
+        wave:wave_length="middle" />
+
+    <TextView
+        android:id="@+id/missionName"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textColor="@color/snow"
+        android:textSize="38sp" />
+
+    <TextView
+        android:id="@+id/missionDescription"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/missionName"
+        android:gravity="center"
+        android:textColor="@color/snow"
+        android:textSize="10sp" />
 
     <io.feeeei.circleseekbar.CircleSeekBar
         android:id="@+id/seek_minute"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
+        app:wheel_can_touch="false"
+        app:wheel_max_process="1000"
         app:wheel_pointer_color="@color/snow"
         app:wheel_reached_color="@color/red"
-        app:wheel_max_process="1000"
-        app:wheel_can_touch="false"
         app:wheel_unreached_width="32dp" />
 
     <!--     300-32-32 = 236   -->
@@ -22,12 +53,12 @@
         android:layout_width="236dp"
         android:layout_height="236dp"
         android:layout_centerInParent="true"
+        app:wheel_can_touch="false"
         app:wheel_max_process="100"
         app:wheel_pointer_color="@color/black"
         app:wheel_pointer_radius="8dp"
         app:wheel_reached_color="@color/greenyellow"
         app:wheel_reached_width="32dp"
-        app:wheel_can_touch="false"
         app:wheel_unreached_color="@color/gold" />
 
 
@@ -46,7 +77,16 @@
         app:suffixGravity="bottom"
         app:suffixTextColor="#000000"
         app:suffixTextSize="30sp"
-        app:timeTextColor="#000000"
+        app:timeTextColor="@color/snow"
         app:timeTextSize="40dp" />
 
+    <Button
+        android:id="@+id/commit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seek_minute"
+        android:layout_marginTop="20dip"
+        android:background="@color/teal"
+        android:text="提交"
+        android:textColor="@color/snow" />
 </RelativeLayout>

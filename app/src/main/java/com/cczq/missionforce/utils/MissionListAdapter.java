@@ -1,12 +1,16 @@
 package com.cczq.missionforce.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.cczq.missionforce.Model.Mission;
 import com.cczq.missionforce.R;
 
@@ -24,6 +28,7 @@ public class MissionListAdapter extends BaseAdapter {
         public TextView missionNameTextView;
         public TextView groupNameTextView;
         public TextView timeTextView;
+        public ImageView missionImageView;
         // public ImageView speaker;
     }
 
@@ -59,6 +64,7 @@ public class MissionListAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new MissionViewHolder();
             convertView = mInflater.inflate(R.layout.mission, null);
+            holder.missionImageView = (ImageView) convertView.findViewById(R.id.missionImageView);
             holder.missionNameTextView = (TextView) convertView.findViewById(R.id.cn_word);
             holder.groupNameTextView = (TextView) convertView.findViewById(R.id.en_word);
             holder.timeTextView = (TextView) convertView.findViewById(R.id.time);
@@ -66,6 +72,19 @@ public class MissionListAdapter extends BaseAdapter {
         } else {
             holder = (MissionViewHolder) convertView.getTag();
         }
+
+        //获得拼音
+        String text = HanziToPinyin.getPinYin(missionData.get(position).missionNameText);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.WHITE)
+                .width(60)  // width in px
+                .height(60) // height in px
+                .endConfig()
+                .buildRect(text.substring(0,2), ColorGenerator.MATERIAL.getRandomColor());
+
+
+        holder.missionImageView.setImageDrawable(drawable);
         holder.missionNameTextView.setText(missionData.get(position).missionNameText);
         holder.groupNameTextView.setText(missionData.get(position).groupNameText);
         holder.timeTextView.setText(missionData.get(position).timeText);
