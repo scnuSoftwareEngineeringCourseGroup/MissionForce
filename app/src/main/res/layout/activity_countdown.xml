@@ -4,7 +4,7 @@
     xmlns:wave="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/powderblue"
+    android:background="@color/my_background_blue"
     android:orientation="vertical">
 
     <com.john.waveview.WaveView
