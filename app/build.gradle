@@ -66,5 +66,7 @@ dependencies {
    // compile 'com.github.john990:WaveView:v0.9'
 
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.yalantis:contextmenu:1.0.7'
+
 
 }

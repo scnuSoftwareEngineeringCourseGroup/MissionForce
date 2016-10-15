@@ -18,4 +18,9 @@ public class GroupFragment extends Fragment{
     {
         return inflater.inflate(R.layout.fragment_group, container, false);
     }
+
+//    @Override
+//    public boolean onPrepareOptionsMenu(){
+//    return false;
+//    }
 }
