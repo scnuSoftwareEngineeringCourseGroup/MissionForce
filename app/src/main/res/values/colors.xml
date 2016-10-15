@@ -167,7 +167,7 @@
     <color name="button_logout_background">#ff6861</color>
 
     <!--下面是guillotine用到的颜色资源-->
-    <color name="guillotine_background">#26ae90</color>
+    <color name="guillotine_background">#bc8f8f</color>
     <color name="guillotine_background_dark">#ffffff</color>
     <color name="selected_item_color">#30d1d5</color>
 

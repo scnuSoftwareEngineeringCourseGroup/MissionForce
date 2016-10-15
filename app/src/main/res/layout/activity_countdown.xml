@@ -40,7 +40,7 @@
         app:wheel_can_touch="false"
         app:wheel_max_process="1000"
         app:wheel_pointer_color="@color/snow"
-        app:wheel_reached_color="@color/mediumseagreen"
+        app:wheel_reached_color="@color/cyan"
         app:wheel_unreached_color="@color/color_accent"
         app:wheel_unreached_width="32dp" />
 

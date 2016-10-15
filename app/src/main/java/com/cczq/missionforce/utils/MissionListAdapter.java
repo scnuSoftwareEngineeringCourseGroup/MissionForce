@@ -75,20 +75,11 @@ public class MissionListAdapter extends BaseAdapter {
             holder = (MissionViewHolder) convertView.getTag();
         }
 
-        //获得拼音
-        //  String text = HanziToPinyin.getPinYin(missionData.get(position).missionNameText);
-//        TextDrawable drawable = TextDrawable.builder()
-//                .beginConfig()
-//                .textColor(Color.WHITE)
-//                .width(60)  // width in px
-//                .height(60) // height in px
-//                .endConfig()
-//                .buildRect(missionData.get(position).missionNameText.substring(0, 1), MATERIAL.getRandomColor());
 
         final Drawable drawable = getRectWithAnimation(missionData.get(position).missionNameText, position, ColorGenerator.MATERIAL.getRandomColor());
 
         holder.missionImageView.setImageDrawable(drawable);
-        // fix for animation not playing for some below 4.4 devices
+        //修复动画在一些低于4.4的手机设备
         holder.missionImageView.post(new Runnable() {
             @Override
             public void run() {

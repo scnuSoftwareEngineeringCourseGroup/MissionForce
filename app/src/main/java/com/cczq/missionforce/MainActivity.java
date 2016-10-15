@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentManager fragmentManager;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private Menu mMenu;
-   // private boolean isgroup;
+    // private boolean isgroup;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -116,12 +115,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initMenuFragment();
     }
 
-
     @Override
     public void onClick(View v) {
         jumpToTheFragment(v.getId());
     }
 
+    @Override
+    public void onMenuItemClick(View clickedView, int position) {
+        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMenuItemLongClick(View clickedView, int position) {
+        Toast.makeText(this, "Long clicked on position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        mMenu = menu;
+        return true;
+        //     this.menu = menu;
+//        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.context_menu:
+                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * @param i 通过点击的资源id来跳转到想要的fragement
+     */
     private void jumpToTheFragment(int i) {
         clearSelect();
         Fragment jumpToFragment = null;
@@ -130,26 +163,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ((TextView) findViewById(R.id.titleBar)).setText("个人资料");
                 ((CanaroTextView) findViewById(R.id.personal)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
                 jumpToFragment = new PersonalFragment();
-                hiddenEditMenu();
+                hiddenMenu();
                 break;
             case R.id.group_group:
                 ((TextView) findViewById(R.id.titleBar)).setText("小组");
                 ((CanaroTextView) findViewById(R.id.group)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
                 jumpToFragment = new GroupFragment();
-               // onCreateMenu();
-                showEditMenu();
+                // onCreateMenu();
+                showMenu();
                 break;
             case R.id.mission_group:
                 ((TextView) findViewById(R.id.titleBar)).setText("任务");
                 ((CanaroTextView) findViewById(R.id.mission)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
                 jumpToFragment = new MissionFragment();
-                hiddenEditMenu();
+                hiddenMenu();
                 break;
             case R.id.settings_group:
                 ((TextView) findViewById(R.id.titleBar)).setText("设置");
                 ((CanaroTextView) findViewById(R.id.settings)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
                 jumpToFragment = new SettingsFragment();
-                hiddenEditMenu();
+                hiddenMenu();
                 break;
             default:
                 guillotineAnimation.close();
@@ -166,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         guillotineAnimation.close();
     }
 
+    /**
+     * 清除相应的选择
+     */
     private void clearSelect() {
         ((CanaroTextView) findViewById(R.id.personal)).setTextAppearance(this, R.style.TextView_GuillotineItem);
         ((CanaroTextView) findViewById(R.id.group)).setTextAppearance(this, R.style.TextView_GuillotineItem);
@@ -180,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
-        Log.d("click!logOut!", "debug");
     }
 
     private void initMenuFragment() {
@@ -243,44 +278,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return menuObjects;
     }
 
-    @Override
-    public void onMenuItemClick(View clickedView, int position) {
-        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onMenuItemLongClick(View clickedView, int position) {
-        Toast.makeText(this, "Long clicked on position: " + position, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        mMenu = menu;
-        return true;
-   //     this.menu = menu;
-//        return true;
-    }
-    @Override
-    public void invalidateOptionsMenu (){
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.m, menu);
-    }
-
-    private void hiddenEditMenu(){
-        if(null != mMenu){
+    /**
+     * 隐藏Menu
+     */
+    private void hiddenMenu() {
+        if (null != mMenu) {
             //		MenuInflater menuInflater = getMenuInflater();
             //	    menuInflater.inflate(R.menu.activity_main, menu);
             //hidden when first time
-            for (int i = 0; i < mMenu.size(); i++){
+            for (int i = 0; i < mMenu.size(); i++) {
                 mMenu.getItem(i).setVisible(false);
                 mMenu.getItem(i).setEnabled(false);
             }
         }
     }
 
-    private void showEditMenu() {
+
+    /**
+     * 显示Menu
+     */
+    private void showMenu() {
         if (null != mMenu) {
             for (int i = 0; i < mMenu.size(); i++) {
                 mMenu.getItem(i).setVisible(true);
@@ -290,15 +307,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.context_menu:
-                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
-                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
