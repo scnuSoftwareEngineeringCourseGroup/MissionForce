@@ -21,6 +21,12 @@ public class PersonalFragment extends Fragment {
 
     private CircleImageView circleImageView;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       // setHasOptionsMenu(false);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
 
@@ -31,7 +37,7 @@ public class PersonalFragment extends Fragment {
                 .width(150)  // width in px
                 .height(150) // height in px
                 .endConfig()
-                .buildRect("任务", ColorGenerator.MATERIAL.getRandomColor());
+                .buildRect("AD", ColorGenerator.MATERIAL.getRandomColor());
         circleImageView.setImageDrawable(drawable);
         return view;
 

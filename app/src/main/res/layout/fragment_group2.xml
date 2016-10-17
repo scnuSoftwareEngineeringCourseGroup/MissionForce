@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="235dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="4">
+
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="117dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:background="@color/aquamarine"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="小组1"
+                android:textColor="@color/snow"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Sed at odio non erat ultrices tincidunt egestas vitae purus. "
+                android:textColor="@color/snow"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_height="117dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:background="@color/blood_primary"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="测试小组"
+                android:textColor="@color/snow"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=" Maecenas interdum, leo pharetra aliquet vehicula, velit felis viverra dolor, "
+                android:textColor="@color/snow"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="117dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:background="@color/aqua"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="小组3"
+                android:textColor="@color/snow"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Interdum et malesuada fames ac ante ipsum primis in faucibus."
+                android:textColor="@color/snow"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_height="117dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:background="@color/orange"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="小组2"
+                android:textColor="@color/snow"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Maecenas interdum, leo pharetra aliquet vehicula"
+                android:textColor="@color/snow"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+
+    </GridLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:background="@color/moccasin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="小组7"
+            android:textColor="@color/snow"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Suspendisse id gravida nibh. "
+            android:textColor="@color/snow"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="150dp"
+        android:text="添加小组"
+        android:background="@color/grey"
+        android:textColor="@color/snow"/>
+
+</LinearLayout>

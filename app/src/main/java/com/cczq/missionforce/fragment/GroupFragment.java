@@ -12,15 +12,18 @@ import com.cczq.missionforce.R;
  * Created by Shyuan on 2016/10/11.
  */
 
-public class GroupFragment extends Fragment{
+public class GroupFragment extends Fragment {
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        return inflater.inflate(R.layout.fragment_group, container, false);
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
-//    @Override
-//    public boolean onPrepareOptionsMenu(){
-//    return false;
-//    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_group2, container, false);
+    }
+
 }

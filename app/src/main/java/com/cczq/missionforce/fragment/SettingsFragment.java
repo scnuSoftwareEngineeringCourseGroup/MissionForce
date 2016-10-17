@@ -15,16 +15,20 @@ import com.cczq.missionforce.R;
  * Created by Shyuan on 2016/10/11.
  */
 
-public class SettingsFragment extends Fragment implements View.OnClickListener{
-
+public class SettingsFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       // setHasOptionsMenu(false);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        ((Button)view.findViewById(R.id.btnLogout)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.btnLogout)).setOnClickListener(this);
         return view;
 
     }
@@ -37,10 +41,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btnLogout)
-        {
-            Log.d("Try to logout","debug");
-            MainActivity mainActivity= (MainActivity)getActivity();
+        if (v.getId() == R.id.btnLogout) {
+            Log.d("Try to logout", "debug");
+            MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.logoutUser();
         }
     }

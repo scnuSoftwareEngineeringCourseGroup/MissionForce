@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentManager fragmentManager;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private Menu mMenu;
-    // private boolean isgroup;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -156,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param i 通过点击的资源id来跳转到想要的fragement
      */
     private void jumpToTheFragment(int i) {
+        //    hiddenMenu();
         clearSelect();
         Fragment jumpToFragment = null;
         switch (i) {
@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ((TextView) findViewById(R.id.titleBar)).setText("小组");
                 ((CanaroTextView) findViewById(R.id.group)).setTextAppearance(this, R.style.TextView_GuillotineItem_Selected);
                 jumpToFragment = new GroupFragment();
-                // onCreateMenu();
                 showMenu();
                 break;
             case R.id.mission_group:
@@ -229,51 +228,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private List<MenuObject> getMenuObjects() {
-        // You can use any [resource, bitmap, drawable, color] as image:
-        // item.setResource(...)
-        // item.setBitmap(...)
-        // item.setDrawable(...)
-        // item.setColor(...)
-        // You can set image ScaleType:
-        // item.setScaleType(ScaleType.FIT_XY)
-        // You can use any [resource, drawable, color] as background:
-        // item.setBgResource(...)
-        // item.setBgDrawable(...)
-        // item.setBgColor(...)
-        // You can use any [color] as text color:
-        // item.setTextColor(...)
-        // You can set any [color] as divider color:
-        // item.setDividerColor(...)
-
         //创建菜单的Objects实例集合
         List<MenuObject> menuObjects = new ArrayList<>();
 
         MenuObject close = new MenuObject();
         close.setResource(R.drawable.icn_close);
 
-        MenuObject send = new MenuObject("Send message");
+        MenuObject send = new MenuObject("发送信息");
         send.setResource(R.drawable.icn_1);
 
-        MenuObject like = new MenuObject("Like profile");
+        MenuObject like = new MenuObject("表扬组员");
         Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.icn_2);
         like.setBitmap(b);
 
-        MenuObject addFr = new MenuObject("Add to friends");
+        MenuObject addFr = new MenuObject("添加组员");
         BitmapDrawable bd = new BitmapDrawable(getResources(),
                 BitmapFactory.decodeResource(getResources(), R.drawable.icn_3));
         addFr.setDrawable(bd);
 
-        MenuObject addFav = new MenuObject("Add to favorites");
-        addFav.setResource(R.drawable.icn_4);
-
-        MenuObject block = new MenuObject("Block user");
+        MenuObject block = new MenuObject("发布任务");
         block.setResource(R.drawable.icn_5);
 
         menuObjects.add(close);
         menuObjects.add(send);
         menuObjects.add(like);
         menuObjects.add(addFr);
-        menuObjects.add(addFav);
+    //    menuObjects.add(addFav);
         menuObjects.add(block);
         return menuObjects;
     }
@@ -283,9 +263,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void hiddenMenu() {
         if (null != mMenu) {
-            //		MenuInflater menuInflater = getMenuInflater();
-            //	    menuInflater.inflate(R.menu.activity_main, menu);
-            //hidden when first time
             for (int i = 0; i < mMenu.size(); i++) {
                 mMenu.getItem(i).setVisible(false);
                 mMenu.getItem(i).setEnabled(false);
